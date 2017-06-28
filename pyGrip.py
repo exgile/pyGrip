@@ -5,8 +5,6 @@ from time import sleep
 import socket
 import sys
 
-FLAG = {'IS_RUNNING': False, 'DETECT_OBJ': False}
-
 def _packet(packet):
     return packet.encode()
 
@@ -23,7 +21,6 @@ class gripper():
         self.speed = 255
         self.force = 255
 
-        self.FLAG = FLAG
         self.IS_RUNNING = False
         self.DETECT_OBJ = False
         self.RESET = False
@@ -92,19 +89,15 @@ class gripper():
 
             gOBJ = self.status[0:2]
 
-            if gOBJ == '00' or gOBJ == '11':
-                #print("No object detect")
+            if gOBJ == '00' or gOBJ == '11':  # No object detection
                 self.DETECT_OBJ = False
-            elif gOBJ == '10':
-                #print("object detect")
+            elif gOBJ == '10':                # Object detection
                 self.DETECT_OBJ = True
 
-            if pose == cur_pose:
-                #print('Stopped')
+            if pose == cur_pose:              # gripper stopped
                 self.IS_RUNNING = False
 
-            else:
-                #print('running')
+            else:                            # gripper is moving
                 self.IS_RUNNING = True
 
             return self.IS_RUNNING, self.DETECT_OBJ

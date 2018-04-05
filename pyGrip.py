@@ -18,8 +18,8 @@ class gripper():
         self.gripperSocket = ''
 
         # Default Speed & Force
-        self.speed = 255
-        self.force = 255
+        self.speed = 50
+        self.force = 80
 
         self.IS_RUNNING = False
         self.DETECT_OBJ = False
@@ -107,13 +107,20 @@ class gripper():
         self.speed = speed
         self.force = force
 
-    def close(self):
-        # Close Action
-        self.move(pose=226)
+    def close(self, spd = 50, foc = 80):
+        self.set_gripper(spd, foc)
+        chk = self.move(pose=226)
 
-    def open(self):
-        # Open Action
+        self.set_default()
+
+    def open(self, spd = 50, foc = 80):
+        self.set_gripper(spd, foc)
         self.move(pose=13)
+        self.set_default()
+
+    def set_default(self):
+        self.set_gripper(self.speed, self.force)
+
 
     def shutdown(self):
         pass
